@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Create/migrate the database on every boot. Do NOT seed here —
+# seeding is a one-off: `bin/rails db:seed` from the Render shell.
+if [ -z "${SKIP_DB_PREPARE:-}" ]; then
+  echo "→ bin/rails db:prepare"
+  ./bin/rails db:prepare
+fi
+
+exec "$@"

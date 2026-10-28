@@ -1,0 +1,40 @@
+.git
+.gitignore
+.dockerignore
+.env
+.env.*
+!.env.example
+docs/
+prompt_pack.md
+**/.DS_Store
+**/Thumbs.db
+**/.idea/
+**/.vscode/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+frontend/npm-debug.log*
+frontend/yarn-error.log*
+
+# Backend runtime / local DBs
+backend/log/
+backend/tmp/
+backend/storage/
+backend/**/*.sqlite3
+backend/**/*.sqlite3-*
+backend/.bundle/
+backend/vendor/bundle/
+backend/config/master.key
+backend/config/credentials/*.key
+backend/.byebug_history
+backend/public/assets/
+backend/public/index.html
+
+# Tests / local tooling (not needed in the image)
+backend/test/
+backend/script/
+**/node_modules/
+**/*.log
