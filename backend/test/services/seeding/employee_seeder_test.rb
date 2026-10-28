@@ -20,7 +20,7 @@ class Seeding::EmployeeSeederTest < ActiveSupport::TestCase
     assert_equal 200, summary[:employees]
     assert_equal 200, Employee.count
     assert_equal 200, SalaryChange.count
-    assert User.exists?(email: "hr@acme.test")
+    assert User.exists?(email: "demo@acme.test")
 
     Employee.includes(:country).find_each do |employee|
       expected = (BigDecimal(employee.salary.to_s) * BigDecimal(employee.country.usd_rate.to_s)).round(2)
