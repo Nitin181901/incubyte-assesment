@@ -1,0 +1,46 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local design / AI notes
+docs/
+
+# Rails (backend)
+backend/log/*
+!backend/log/.keep
+backend/tmp/*
+!backend/tmp/.keep
+!backend/tmp/pids/
+backend/tmp/pids/*
+!backend/tmp/pids/.keep
+!backend/tmp/storage/
+backend/tmp/storage/*
+!backend/tmp/storage/.keep
+backend/storage/*
+!backend/storage/.keep
+backend/**/*.sqlite3
+backend/**/*.sqlite3-*
+backend/public/assets
+backend/.bundle/
+backend/vendor/bundle/
+backend/config/master.key
+backend/config/credentials/*.key
+backend/.byebug_history
+.env
+.env.*
+!.env.example
+*.log
+
+# Frontend (React / Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+npm-debug.log*
+yarn-error.log*
+
+# Production build copied into Rails
+backend/public/index.html
+backend/public/assets/
