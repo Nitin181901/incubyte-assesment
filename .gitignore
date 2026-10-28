@@ -6,6 +6,7 @@ Thumbs.db
 
 # Local design / AI notes
 docs/
+prompt_pack.md
 
 # Rails (backend)
 backend/log/*

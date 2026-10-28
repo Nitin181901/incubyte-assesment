@@ -1,0 +1,66 @@
+# salary_usd = salary * country.usd_rate (fixtures skip callbacks)
+alice:
+  first_name: Alice
+  last_name: Anderson
+  email: alice.anderson@acme.test
+  country: united_states
+  department: Engineering
+  job_title: Software Engineer
+  salary: 100000.00
+  salary_usd: 100000.00
+  hired_on: 2020-01-15
+
+bob:
+  first_name: Bob
+  last_name: Baker
+  email: bob.baker@acme.test
+  country: united_states
+  department: Sales
+  job_title: Account Manager
+  salary: 80000.00
+  salary_usd: 80000.00
+  hired_on: 2018-06-01
+
+carol:
+  first_name: Carol
+  last_name: Chopra
+  email: carol.chopra@acme.test
+  country: india
+  department: Engineering
+  job_title: Software Engineer
+  salary: 2000000.00
+  salary_usd: 24000.00
+  hired_on: 2021-03-10
+
+dave:
+  first_name: Dave
+  last_name: Das
+  email: dave.das@acme.test
+  country: india
+  department: HR
+  job_title: HR Specialist
+  salary: 1500000.00
+  salary_usd: 18000.00
+  hired_on: 2019-11-20
+
+eve:
+  first_name: Eve
+  last_name: Evans
+  email: eve.evans@acme.test
+  country: united_states
+  department: Marketing
+  job_title: Marketing Manager
+  salary: 90000.00
+  salary_usd: 90000.00
+  hired_on: 2022-08-01
+
+frank:
+  first_name: Frank
+  last_name: "100%_Wildcard"
+  email: frank.wildcard@acme.test
+  country: united_states
+  department: Engineering
+  job_title: Staff Engineer
+  salary: 150000.00
+  salary_usd: 150000.00
+  hired_on: 2016-01-01

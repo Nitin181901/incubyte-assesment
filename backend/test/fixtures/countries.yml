@@ -1,0 +1,11 @@
+united_states:
+  code: US
+  name: United States
+  currency_code: USD
+  usd_rate: 1.000000
+
+india:
+  code: IN
+  name: India
+  currency_code: INR
+  usd_rate: 0.012000
