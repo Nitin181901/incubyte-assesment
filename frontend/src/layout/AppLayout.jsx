@@ -13,7 +13,6 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-  useMediaQuery,
 } from '@mui/material'
 import { alpha, useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -165,7 +164,6 @@ function SidebarUser({ collapsed }) {
 export default function AppLayout() {
   const theme = useTheme()
   const { mode, toggleMode } = useThemeMode()
-  const isMobile = useMediaQuery(`(max-width:${layout.mobileBreakpoint}px)`)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(readCollapsed)
 
