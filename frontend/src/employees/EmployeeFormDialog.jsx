@@ -126,13 +126,19 @@ export default function EmployeeFormDialog({
   }
 
   return (
-    <Dialog open={open} onClose={saving ? undefined : onClose} fullWidth maxWidth="sm">
+    <Dialog
+      open={open}
+      onClose={saving ? undefined : onClose}
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby="employee-form-title"
+    >
       <form onSubmit={handleSubmit}>
-        <DialogTitle>{isEdit ? 'Edit employee' : 'Add employee'}</DialogTitle>
+        <DialogTitle id="employee-form-title">{isEdit ? 'Edit employee' : 'Add employee'}</DialogTitle>
         <DialogContent>
           <Stack spacing={2} sx={{ mt: 1 }}>
             {formError ? (
-              <Typography color="error" variant="body2">
+              <Typography color="error" variant="body2" role="alert">
                 {formError}
               </Typography>
             ) : null}
@@ -141,11 +147,13 @@ export default function EmployeeFormDialog({
                 label="First name"
                 required
                 fullWidth
+                autoFocus
                 value={form.first_name}
                 onChange={(e) => update('first_name', e.target.value)}
                 error={Boolean(fieldError(errors, 'first_name'))}
                 helperText={fieldError(errors, 'first_name')}
               />
+
               <TextField
                 label="Last name"
                 required

@@ -19,7 +19,6 @@ module Backend
       rescue ActionController::ParameterMissing => e
         render_error("validation_failed", status: :unprocessable_entity, details: { e.param => [ "is required" ] })
       end
-
     end
   end
 end

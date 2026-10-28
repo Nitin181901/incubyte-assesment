@@ -28,16 +28,21 @@ export default function DeleteEmployeeDialog({ open, employee, onClose, onDelete
   }
 
   return (
-    <Dialog open={open} onClose={deleting ? undefined : onClose}>
-      <DialogTitle>Delete employee?</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={deleting ? undefined : onClose}
+      aria-labelledby="delete-employee-title"
+      aria-describedby="delete-employee-description"
+    >
+      <DialogTitle id="delete-employee-title">Delete employee?</DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <DialogContentText id="delete-employee-description">
           This permanently removes {employee ? employeeName(employee) : 'this employee'} and their salary
           history.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} disabled={deleting}>
+        <Button onClick={onClose} disabled={deleting} autoFocus>
           Cancel
         </Button>
         <Button color="error" variant="contained" onClick={handleDelete} disabled={deleting}>

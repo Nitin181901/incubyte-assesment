@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { formatCompactUsd, formatUsd } from './formatters'
+import { formatCompactUsd } from './formatters'
 import SectionCard from './SectionCard'
 import { useStatsResource } from './useStats'
 

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+echo "== Backend: bundle =="
+(cd "$ROOT/backend" && bundle install)
+
+echo "== Frontend: npm install =="
+(cd "$ROOT/frontend" && npm install)
+
+echo "== Database prepare + seed =="
+(cd "$ROOT/backend" && bin/rails db:prepare db:seed)
+
+echo "Done. Run: make test  |  make dev"

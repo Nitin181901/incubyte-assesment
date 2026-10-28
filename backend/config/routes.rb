@@ -35,4 +35,3 @@ Rails.application.routes.draw do
   }
   root "fallback#index"
 end
-

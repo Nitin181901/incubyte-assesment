@@ -64,4 +64,3 @@ class Seeding::EmployeeSeederTest < ActiveSupport::TestCase
     end
   end
 end
-

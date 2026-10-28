@@ -46,4 +46,3 @@ module Gen
     config.middleware.use ActionDispatch::Static, Rails.public_path.to_s
   end
 end
-

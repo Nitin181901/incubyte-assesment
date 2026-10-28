@@ -101,8 +101,15 @@ export default function EmployeeTable({
                 <TableRow
                   key={employee.id}
                   hover
+                  tabIndex={0}
                   sx={{ cursor: 'pointer' }}
                   onClick={() => onRowClick?.(employee)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      onRowClick?.(employee)
+                    }
+                  }}
                 >
                   <TableCell>{employeeName(employee)}</TableCell>
                   <TableCell>{employee.department}</TableCell>

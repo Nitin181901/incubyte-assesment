@@ -52,4 +52,3 @@ end
 
 # Speed up tests by using a cheaper bcrypt cost.
 BCrypt::Engine.cost = BCrypt::Engine::MIN_COST
-

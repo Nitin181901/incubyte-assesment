@@ -3,12 +3,11 @@ module Backend
     class SalaryChangesController < BaseController
       def index
         employee = Employee.find(params[:employee_id])
-        changes = employee.salary_changes.order(created_at: :desc, id: :desc)
+        changes = employee.salary_changes.order(created_at: :desc, id: :desc).limit(200)
         render json: { data: changes.map { |change| salary_change_json(change) } }
       rescue ActiveRecord::RecordNotFound
         render_not_found and return
       end
-
     end
   end
 end

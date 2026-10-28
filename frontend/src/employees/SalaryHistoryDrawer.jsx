@@ -43,10 +43,17 @@ export default function SalaryHistoryDrawer({ open, employee, onClose }) {
   }, [open, employee])
 
   return (
-    <Drawer anchor="right" open={open} onClose={onClose} PaperProps={{ sx: { width: { xs: '100%', sm: 420 } } }}>
+    <Drawer
+      anchor="right"
+      open={open}
+      onClose={onClose}
+      PaperProps={{ sx: { width: { xs: '100%', sm: 420 } }, role: 'dialog', 'aria-labelledby': 'salary-history-title' }}
+    >
       <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h6">Salary history</Typography>
+          <Typography id="salary-history-title" variant="h6">
+            Salary history
+          </Typography>
           <Typography variant="body2" color="text.secondary">
             {employee ? employeeName(employee) : ''}
           </Typography>

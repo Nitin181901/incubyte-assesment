@@ -20,4 +20,3 @@ class ActionDispatch::IntegrationTest
     { "Authorization" => "Bearer #{token}" }
   end
 end
-

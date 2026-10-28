@@ -67,7 +67,6 @@ module Backend
 
       private
 
-
       def set_employee
         @employee = Employee.includes(:country).find(params[:id])
       rescue ActiveRecord::RecordNotFound

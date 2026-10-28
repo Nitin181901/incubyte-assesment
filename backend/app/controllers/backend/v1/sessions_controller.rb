@@ -15,7 +15,6 @@ module Backend
         else
           render json: { error: "unauthorized", details: {} }, status: :unauthorized
         end
-
       end
     end
   end

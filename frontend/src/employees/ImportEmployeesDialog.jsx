@@ -62,13 +62,13 @@ export default function ImportEmployeesDialog({ open, onClose, onImported }) {
   }
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md" aria-labelledby="import-csv-title">
       <form onSubmit={handleSubmit}>
-        <DialogTitle>Import CSV</DialogTitle>
+        <DialogTitle id="import-csv-title">Import CSV</DialogTitle>
         <DialogContent>
           <Stack spacing={2} sx={{ mt: 1 }}>
             {error ? <Alert severity="error">{error}</Alert> : null}
-            <Button variant="outlined" component="label">
+            <Button variant="outlined" component="label" aria-label="Choose CSV file">
               {file ? file.name : 'Choose CSV file'}
               <input
                 hidden

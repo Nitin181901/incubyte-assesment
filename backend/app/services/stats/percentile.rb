@@ -29,6 +29,5 @@ module Stats
       hi_v = values[hi].to_d
       lo_v + (hi_v - lo_v) * weight
     end
-
   end
 end

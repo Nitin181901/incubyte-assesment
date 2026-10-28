@@ -36,7 +36,6 @@ module Employees
     private
 
     def filtered
-
       relation = @scope.all
       relation = relation.search(@params[:q]) if @params[:q].present?
 
@@ -73,7 +72,6 @@ module Employees
         relation.left_joins(:country).order(Arel.sql("countries.code #{dir}"))
       when "salary", "salary_usd", "hired_on", "job_title", "department"
         relation.order(Arel.sql("employees.#{sort} #{dir}"))
-
       else
         relation
       end

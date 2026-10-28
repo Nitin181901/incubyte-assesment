@@ -3,8 +3,9 @@ module Backend
     class StatsController < BaseController
       def summary
         payload = stats_cache("summary") { Stats::Summary.call }
-        render json: serialize_numbers(payload)
+        render json: payload
       end
+
 
       def breakdown
         by = params[:by].to_s
@@ -44,12 +45,6 @@ module Backend
           Stats::Outliers.new(threshold: threshold, limit: limit, min_group_size: min_group_size).call
         end
         render json: { threshold: threshold, limit: limit, data: payload }
-      end
-
-      private
-
-      def serialize_numbers(payload)
-        payload.transform_values { |value| value.is_a?(BigDecimal) ? value : value }
       end
     end
   end

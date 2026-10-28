@@ -56,6 +56,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               fullWidth
+              autoFocus
               autoComplete="username"
             />
             <TextField

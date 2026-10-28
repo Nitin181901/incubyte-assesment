@@ -25,7 +25,7 @@ module Stats
           counts[@bins - 1] += 1
         else
           index = ((value - min) / width).floor
-          index = [[ index, 0 ].max, @bins - 1 ].min
+          index = [ [ index, 0 ].max, @bins - 1 ].min
           counts[index] += 1
         end
       end
