@@ -12,23 +12,24 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import MailOutlineIcon from '@mui/icons-material/MailOutlined'
+import MailOutlinedIcon from '@mui/icons-material/MailOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
-import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined'
-import HistoryEduOutlinedIcon from '@mui/icons-material/HistoryEduOutlined'
+import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined'
+import BalanceOutlinedIcon from '@mui/icons-material/BalanceOutlined'
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import BrandMark from '../components/BrandMark'
 import DocumentTitle from '../components/DocumentTitle'
+import { colors } from '../theme/tokens'
 
 const DEMO_EMAIL = 'demo@acme.test'
 const DEMO_PASSWORD = 'Password123!'
 
-const PILLS = [
-  { icon: GroupsOutlinedIcon, text: '10,000 people, 10 countries' },
-  { icon: InsightsOutlinedIcon, text: 'Answers, not just rows' },
-  { icon: HistoryEduOutlinedIcon, text: 'Every change is recorded' },
+const POINTS = [
+  { icon: QueryStatsOutlinedIcon, text: 'See payroll totals and ranges without a spreadsheet hunt' },
+  { icon: BalanceOutlinedIcon, text: 'Compare teams and titles on the same USD footing' },
+  { icon: HistoryOutlinedIcon, text: 'Every salary change stays in the audit trail' },
 ]
 
 export default function LoginPage() {
@@ -66,126 +67,39 @@ export default function LoginPage() {
       sx={{
         minHeight: '100vh',
         display: 'grid',
-        gridTemplateColumns: { xs: '1fr', md: '1.05fr 0.95fr' },
+        gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
       }}
     >
       <DocumentTitle title="Sign in" />
 
       <Box
         sx={{
-          position: 'relative',
-          overflow: 'hidden',
+          bgcolor: colors.slate950,
           color: 'common.white',
           px: { xs: 3, md: 6 },
           py: { xs: 4, md: 6 },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          background: (t) =>
-            `linear-gradient(160deg, ${t.palette.acme.navy} 0%, #1E1B4B 45%, #312E81 100%)`,
         }}
       >
-        <Box
-          aria-hidden
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            pointerEvents: 'none',
-            '& .blob': {
-              position: 'absolute',
-              borderRadius: '50%',
-              filter: 'blur(50px)',
-              opacity: 0.5,
-              animation: 'acme-drift 20s ease-in-out infinite alternate',
-              '@media (prefers-reduced-motion: reduce)': { animation: 'none' },
-            },
-          }}
-        >
-          <Box
-            className="blob"
-            sx={{
-              width: '48%',
-              height: '48%',
-              top: '-10%',
-              left: '-8%',
-              bgcolor: 'primary.main',
-            }}
-          />
-          <Box
-            className="blob"
-            sx={{
-              width: '40%',
-              height: '40%',
-              top: '30%',
-              right: '-12%',
-              bgcolor: 'secondary.main',
-              animationDelay: '-7s',
-            }}
-          />
-          <Box
-            className="blob"
-            sx={{
-              width: '44%',
-              height: '44%',
-              bottom: '-16%',
-              left: '20%',
-              bgcolor: 'info.main',
-              animationDelay: '-14s',
-            }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: 120,
-              background:
-                'radial-gradient(100% 80% at 20% 100%, rgba(99,102,241,.35), transparent 60%), radial-gradient(90% 70% at 80% 100%, rgba(236,72,153,.28), transparent 55%)',
-            }}
-          />
-        </Box>
-
-        <Box sx={{ position: 'relative', zIndex: 1, maxWidth: 520 }}>
+        <Box sx={{ maxWidth: 460 }}>
           <BrandMark light />
           <Typography variant="h3" sx={{ mt: 4, mb: 1, color: 'common.white' }}>
-            Pay people fairly.
+            Know what you pay.
           </Typography>
-          <Typography
-            variant="h3"
-            sx={{
-              mb: 2,
-              backgroundImage: (t) => t.palette.acme.textAccent,
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              color: 'transparent',
-            }}
-          >
-            See it clearly.
+          <Typography variant="h3" sx={{ mb: 2, color: colors.primary }}>
+            Spot what&apos;s unfair.
           </Typography>
-          <Typography sx={{ color: 'rgba(255,255,255,0.72)', mb: 3, maxWidth: 420 }}>
-            The salary workspace for HR: manage compensation across every country and understand how
-            your organisation really pays.
+          <Typography sx={{ color: 'rgba(255,255,255,0.72)', mb: 3 }}>
+            PayLens helps HR understand ACME compensation across countries — totals, ranges, and
+            outliers in one place.
           </Typography>
-          <Stack spacing={1.25}>
-            {PILLS.map(({ icon: Icon, text }) => (
-              <Stack
-                key={text}
-                direction="row"
-                spacing={1.25}
-                sx={{
-                  alignItems: 'center',
-                  px: 1.5,
-                  py: 1.1,
-                  borderRadius: 999,
-                  bgcolor: 'rgba(255,255,255,0.1)',
-                  border: '1px solid rgba(255,255,255,0.16)',
-                  backdropFilter: 'blur(12px)',
-                  width: 'fit-content',
-                }}
-              >
-                <Icon fontSize="small" />
-                <Typography variant="body2" sx={{ fontWeight: 600 }}>
+          <Stack spacing={1.5}>
+            {POINTS.map(({ icon: Icon, text }) => (
+              <Stack key={text} direction="row" spacing={1.25} sx={{ alignItems: 'flex-start' }}>
+                <Icon fontSize="small" sx={{ mt: 0.25, color: colors.secondary }} />
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.85)' }}>
                   {text}
                 </Typography>
               </Stack>
@@ -200,7 +114,7 @@ export default function LoginPage() {
           placeItems: 'center',
           px: { xs: 2, sm: 4 },
           py: 4,
-          bgcolor: (t) => (t.palette.mode === 'dark' ? 'background.default' : '#F8FAFC'),
+          bgcolor: 'background.default',
         }}
       >
         <Box
@@ -208,17 +122,18 @@ export default function LoginPage() {
             width: '100%',
             maxWidth: 420,
             p: { xs: 3, sm: 4 },
-            borderRadius: 6,
+            borderRadius: 3,
             bgcolor: 'background.paper',
-            boxShadow: (t) => t.palette.acme.glassShadow,
-            border: (t) => t.palette.acme.glassBorder,
+            border: '1px solid',
+            borderColor: 'divider',
+            boxShadow: (t) => t.shadows[1],
           }}
         >
           <Stack spacing={2.25} component="form" onSubmit={handleSubmit}>
             <Box>
               <Typography variant="h5">Welcome back</Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                Sign in to manage salaries and view pay insights.
+                Sign in to review ACME salaries and pay insights.
               </Typography>
             </Box>
 
@@ -237,7 +152,7 @@ export default function LoginPage() {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <MailOutlineIcon fontSize="small" color="action" />
+                      <MailOutlinedIcon fontSize="small" color="action" />
                     </InputAdornment>
                   ),
                 },
@@ -281,10 +196,9 @@ export default function LoginPage() {
             <Box
               sx={{
                 p: 1.75,
-                borderRadius: 3,
-                bgcolor: (t) =>
-                  t.palette.mode === 'dark' ? 'rgba(99,102,241,0.12)' : 'rgba(99,102,241,0.08)',
-                border: '1px dashed',
+                borderRadius: 2,
+                bgcolor: 'action.hover',
+                border: '1px solid',
                 borderColor: 'divider',
               }}
             >

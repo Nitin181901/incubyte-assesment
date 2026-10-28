@@ -41,11 +41,10 @@ describe('AppLayout', () => {
     expect(overview).toHaveAttribute('aria-current', 'page')
   })
 
-  it('exposes a logout control', async () => {
+  it('exposes logout in the user menu', async () => {
     const user = userEvent.setup()
     renderShell('/')
-    const buttons = screen.getAllByRole('button', { name: /log out/i })
-    expect(buttons.length).toBeGreaterThan(0)
-    await user.click(buttons[0])
+    await user.click(screen.getByRole('button', { name: /open user menu/i }))
+    expect(await screen.findByRole('menuitem', { name: /logout/i })).toBeInTheDocument()
   })
 })

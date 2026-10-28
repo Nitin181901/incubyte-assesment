@@ -39,7 +39,7 @@ export default function JobTitleMedians({ refreshKey, filters = {} }) {
 
   return (
     <ChartCard
-      title="What is the typical salary by job title?"
+      title="Median pay by job title"
       subtitle="Median USD for the top titles."
       footnote="Top 12 titles by median."
       loading={loading}
@@ -52,8 +52,8 @@ export default function JobTitleMedians({ refreshKey, filters = {} }) {
           <BarChart data={rows} layout="vertical" margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
             <defs>
               <linearGradient id="titleBar" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor={theme.palette.acme.teal} />
-                <stop offset="100%" stopColor={theme.palette.acme.cyan} />
+                <stop offset="0%" stopColor={theme.palette.primary.main} />
+                <stop offset="100%" stopColor={theme.palette.secondary.main} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />

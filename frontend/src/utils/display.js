@@ -1,13 +1,13 @@
-import { colors, departmentColors, departmentFallback } from '../theme/tokens'
+import { colors, departmentDot, departmentDotFallback } from '../theme/tokens'
 
 const AVATAR_PALETTE = [
-  colors.indigo,
-  colors.violet,
-  colors.pink,
-  colors.cyan,
-  colors.teal,
-  colors.orange,
-  colors.coral,
+  colors.primary,
+  colors.secondary,
+  colors.success,
+  colors.danger,
+  colors.slate700,
+  '#2563EB',
+  '#7C3AED',
 ]
 
 export function hashString(input) {
@@ -72,8 +72,19 @@ export function firstNameFromUser(user) {
   return 'there'
 }
 
-export function departmentStyle(department) {
-  return departmentColors[department] || departmentFallback
+export function departmentDotColor(department) {
+  return departmentDot[department] || departmentDotFallback
+}
+
+export function formatHiredOn(value) {
+  if (!value) return '—'
+  const date = value instanceof Date ? value : new Date(value)
+  if (Number.isNaN(date.getTime())) return String(value)
+  const day = String(date.getUTCDate()).padStart(2, '0')
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const month = months[date.getUTCMonth()]
+  const year = date.getUTCFullYear()
+  return `${day} ${month} ${year}`
 }
 
 export function peopleMatchLabel(count) {

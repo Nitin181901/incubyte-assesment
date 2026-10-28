@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   avatarColor,
   formatCompactPayroll,
+  formatHiredOn,
   formatMoney,
   greetingForHour,
   initials,
@@ -36,5 +37,10 @@ describe('display helpers', () => {
   it('labels people matches', () => {
     expect(peopleMatchLabel(1)).toBe('1 person matches your filters')
     expect(peopleMatchLabel(10000)).toBe('10,000 people match your filters')
+  })
+
+  it('formats hired-on as DD MMM YYYY', () => {
+    expect(formatHiredOn('2020-01-15')).toBe('15 Jan 2020')
+    expect(formatHiredOn(null)).toBe('—')
   })
 })

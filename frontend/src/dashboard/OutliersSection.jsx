@@ -35,7 +35,7 @@ export default function OutliersSection({ refreshKey, filters = {} }) {
 
   return (
     <ChartCard
-      title="Who is paid unusually?"
+      title="Pay outliers"
       subtitle="People far from the peer median for the same title and country."
       footnote="More than 40% from the peer median. Peer groups smaller than 5 are skipped."
       loading={loading}
@@ -43,8 +43,8 @@ export default function OutliersSection({ refreshKey, filters = {} }) {
       onRetry={refresh}
       empty={rows.length === 0 ? 'No outliers at this threshold.' : null}
     >
-      <Box sx={{ overflowX: 'auto' }}>
-        <Table size="small" aria-label="Pay outliers table">
+      <Box sx={{ overflow: 'auto', maxHeight: 420 }}>
+        <Table size="small" stickyHeader aria-label="Pay outliers table">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>

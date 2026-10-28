@@ -29,7 +29,7 @@ export default function DistributionSection({ refreshKey }) {
 
   return (
     <ChartCard
-      title="How are salaries distributed?"
+      title="Salary distribution"
       subtitle="Headcount by salary band (USD)."
       footnote={`Histogram with ${bins} bins.`}
       loading={loading}
@@ -72,7 +72,7 @@ export default function DistributionSection({ refreshKey }) {
                 background: theme.palette.background.paper,
               }}
             />
-            <Bar dataKey="count" name="Count" fill={theme.palette.acme.indigo} radius={[6, 6, 0, 0]} />
+            <Bar dataKey="count" name="Count" fill={theme.palette.primary.main} radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Box>

@@ -26,7 +26,10 @@ export function formatDate(value) {
   if (!value) return '—'
   const date = value instanceof Date ? value : new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return date.toLocaleDateString('en-CA')
+  // Prefer shared hired-on display (DD MMM YYYY, UTC calendar day).
+  const day = String(date.getUTCDate()).padStart(2, '0')
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  return `${day} ${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`
 }
 
 export function employeeName(employee) {

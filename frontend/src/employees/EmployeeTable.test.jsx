@@ -54,5 +54,8 @@ describe('EmployeeTable', () => {
     expect(screen.getByText('Bob Baker')).toBeInTheDocument()
     expect(screen.getByText(/52/)).toBeInTheDocument()
     expect(screen.getByText('Engineering')).toBeInTheDocument()
+    // Level column is derived L1–L6 from job_title (API has no level field)
+    expect(screen.getAllByText('L3').length).toBeGreaterThanOrEqual(1)
+    expect(screen.getByText('15 Jan 2020')).toBeInTheDocument()
   })
 })

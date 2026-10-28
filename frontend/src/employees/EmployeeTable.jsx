@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Button,
-  Chip,
   IconButton,
   Skeleton,
   Stack,
@@ -22,7 +21,8 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import HistoryIcon from '@mui/icons-material/History'
 import GlassCard from '../components/GlassCard'
-import { avatarColor, countryFlag, departmentStyle, initials } from '../utils/display'
+import { avatarColor, countryFlag, departmentDotColor, initials } from '../utils/display'
+import { levelFromJobTitle } from '../utils/level'
 import { employeeName, formatDate, formatLocalSalary, formatUsd } from './formatters'
 
 const COLUMNS = [
@@ -92,11 +92,11 @@ export default function EmployeeTable({
                 <TableRow key={`sk-${i}`}>
                   {COLUMNS.map((col) => (
                     <TableCell key={col.id}>
-                      <Skeleton height={28} />
+                      <Skeleton height={24} />
                     </TableCell>
                   ))}
                   <TableCell>
-                    <Skeleton height={28} />
+                    <Skeleton height={24} />
                   </TableCell>
                 </TableRow>
               ))
@@ -107,15 +107,19 @@ export default function EmployeeTable({
                 </TableCell>
               </TableRow>
             ) : (
-              rows.map((employee) => {
+              rows.map((employee, index) => {
                 const name = employeeName(employee)
-                const dept = departmentStyle(employee.department)
+                const level = levelFromJobTitle(employee.job_title)
+                const dot = departmentDotColor(employee.department)
                 return (
                   <TableRow
                     key={employee.id}
                     hover
                     tabIndex={0}
-                    sx={{ cursor: 'pointer' }}
+                    sx={{
+                      cursor: 'pointer',
+                      bgcolor: index % 2 === 1 ? 'action.hover' : 'transparent',
+                    }}
                     onClick={() => onRowClick?.(employee)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
@@ -125,12 +129,12 @@ export default function EmployeeTable({
                     }}
                   >
                     <TableCell>
-                      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
+                      <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                         <Avatar
                           sx={{
-                            width: 36,
-                            height: 36,
-                            fontSize: 13,
+                            width: 30,
+                            height: 30,
+                            fontSize: 12,
                             fontWeight: 700,
                             bgcolor: avatarColor(name),
                           }}
@@ -148,14 +152,24 @@ export default function EmployeeTable({
                       </Stack>
                     </TableCell>
                     <TableCell>
-                      <Chip
-                        size="small"
-                        label={employee.department || '—'}
-                        sx={{ bgcolor: dept.bg, color: dept.fg, fontWeight: 600 }}
-                      />
+                      <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
+                        <Box
+                          aria-hidden
+                          sx={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: '50%',
+                            bgcolor: dot,
+                            flexShrink: 0,
+                          }}
+                        />
+                        <Typography variant="body2">{employee.department || '—'}</Typography>
+                      </Stack>
                     </TableCell>
                     <TableCell>
-                      <Chip size="small" variant="outlined" label={employee.job_title || '—'} />
+                      <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                        {level}
+                      </Typography>
                     </TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
@@ -169,7 +183,9 @@ export default function EmployeeTable({
                     <TableCell align="right" sx={{ fontWeight: 700 }}>
                       {formatUsd(employee.salary_usd)}
                     </TableCell>
-                    <TableCell>{formatDate(employee.hired_on)}</TableCell>
+                    <TableCell sx={{ whiteSpace: 'nowrap', minWidth: 110 }}>
+                      {formatDate(employee.hired_on)}
+                    </TableCell>
                     <TableCell align="right" onClick={(e) => e.stopPropagation()}>
                       <Box sx={{ display: 'inline-flex' }}>
                         <Tooltip title="Salary history">

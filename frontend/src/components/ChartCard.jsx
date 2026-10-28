@@ -5,18 +5,18 @@ export default function ChartCard({
   title,
   subtitle,
   footnote,
-  accent = 'primary.main',
   loading,
   error,
   onRetry,
   action,
   children,
   empty,
+  sx,
 }) {
   return (
-    <GlassCard sx={{ p: 0, height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ height: 3, backgroundImage: (t) => t.palette.acme.gradient, bgcolor: accent }} />
-      <Box sx={{ p: 2.5, flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+    <GlassCard sx={{ p: 0, height: '100%', display: 'flex', flexDirection: 'column', ...sx }}>
+      <Box sx={{ height: 3, bgcolor: 'primary.main' }} />
+      <Box sx={{ p: 2.5, flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 1.5, minHeight: 0 }}>
         <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start' }}>
           <Box sx={{ flexGrow: 1, minWidth: 0 }}>
             <Typography variant="h6" component="h2">
@@ -54,7 +54,7 @@ export default function ChartCard({
             {empty}
           </Typography>
         ) : (
-          children
+          <Box sx={{ flexGrow: 1, minHeight: 0 }}>{children}</Box>
         )}
 
         {footnote && !loading && !error ? (

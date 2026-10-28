@@ -25,7 +25,7 @@ export default function TenureSection({ refreshKey }) {
 
   return (
     <ChartCard
-      title="Does tenure change the median?"
+      title="Pay by tenure"
       subtitle="Median pay by years at ACME."
       footnote="Bands: 0–2, 2–5, and 5+ years."
       loading={loading}
@@ -61,7 +61,7 @@ export default function TenureSection({ refreshKey }) {
                 background: theme.palette.background.paper,
               }}
             />
-            <Bar dataKey="median" name="Median" fill={theme.palette.acme.pink} radius={[8, 8, 0, 0]} />
+            <Bar dataKey="median" name="Median" fill={theme.palette.secondary.main} radius={[8, 8, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Box>

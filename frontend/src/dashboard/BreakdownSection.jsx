@@ -22,7 +22,7 @@ import { safeNumber } from '../utils/display'
 const BY_OPTIONS = [
   { value: 'country', label: 'Country' },
   { value: 'department', label: 'Department' },
-  { value: 'job_title', label: 'Level' },
+  { value: 'job_title', label: 'Job title' },
 ]
 
 export default function BreakdownSection({ refreshKey, filters = {} }) {
@@ -67,9 +67,9 @@ export default function BreakdownSection({ refreshKey, filters = {} }) {
 
   return (
     <ChartCard
-      title="Where does the payroll money go?"
-      subtitle="Total annual salary (USD) by group — approximate from average × headcount."
-      footnote="Top groups by estimated payroll. Chart filters apply client-side; stats APIs are global."
+      title="Payroll by group"
+      subtitle="Estimated annual salary (USD) from average × headcount."
+      footnote="Top groups by estimated payroll. Filters apply client-side; stats APIs are organisation-wide."
       loading={loading}
       error={error}
       onRetry={refresh}
@@ -98,8 +98,8 @@ export default function BreakdownSection({ refreshKey, filters = {} }) {
           <BarChart data={chartRows} margin={{ top: 8, right: 8, left: 8, bottom: 48 }}>
             <defs>
               <linearGradient id="payrollBar" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={theme.palette.acme.indigo} />
-                <stop offset="100%" stopColor={theme.palette.acme.violet} />
+                <stop offset="0%" stopColor={theme.palette.primary.main} />
+                <stop offset="100%" stopColor={theme.palette.primary.dark} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />

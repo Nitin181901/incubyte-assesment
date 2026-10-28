@@ -45,7 +45,7 @@ export default function EmployeeFilters({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Name, email or title"
-          sx={{ minWidth: { xs: '100%', sm: 260 }, flexGrow: 1 }}
+          sx={{ minWidth: { xs: '100%', sm: 240 }, flex: '1 1 240px' }}
           slotProps={{
             htmlInput: { 'aria-label': 'Search employees' },
             input: {
@@ -63,7 +63,7 @@ export default function EmployeeFilters({
           size="small"
           value={filters.country || ''}
           onChange={(e) => onChange({ country: e.target.value })}
-          sx={{ minWidth: 150, flexShrink: 0 }}
+          sx={{ minWidth: 140, flex: '0 1 140px' }}
         >
           <MenuItem value="">All</MenuItem>
           {(meta.countries || []).map((c) => (
@@ -78,7 +78,7 @@ export default function EmployeeFilters({
           size="small"
           value={filters.department || ''}
           onChange={(e) => onChange({ department: e.target.value })}
-          sx={{ minWidth: 160, flexShrink: 0 }}
+          sx={{ minWidth: 150, flex: '0 1 150px' }}
         >
           <MenuItem value="">All</MenuItem>
           {(meta.departments || []).map((d) => (
@@ -89,11 +89,11 @@ export default function EmployeeFilters({
         </TextField>
         <TextField
           select
-          label="Level"
+          label="Job title"
           size="small"
           value={filters.job_title || ''}
           onChange={(e) => onChange({ job_title: e.target.value })}
-          sx={{ minWidth: 180, flexShrink: 0 }}
+          sx={{ minWidth: 170, flex: '0 1 170px' }}
         >
           <MenuItem value="">All</MenuItem>
           {(meta.job_titles || []).map((t) => (
@@ -108,7 +108,7 @@ export default function EmployeeFilters({
           type="number"
           value={filters.min_salary_usd || ''}
           onChange={(e) => onChange({ min_salary_usd: e.target.value })}
-          sx={{ minWidth: 140, flexShrink: 0 }}
+          sx={{ minWidth: 150, flex: '0 1 150px' }}
         />
         <TextField
           label="Max salary (USD)"
@@ -116,7 +116,7 @@ export default function EmployeeFilters({
           type="number"
           value={filters.max_salary_usd || ''}
           onChange={(e) => onChange({ max_salary_usd: e.target.value })}
-          sx={{ minWidth: 140, flexShrink: 0 }}
+          sx={{ minWidth: 150, flex: '0 1 150px' }}
         />
         <Button onClick={onClear} sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
           Clear filters
