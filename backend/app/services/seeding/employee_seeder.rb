@@ -99,7 +99,7 @@ module Seeding
     }.freeze
 
     BATCH_SIZE = 1_000
-    DEMO_EMAIL = "demo@acme.test".freeze
+    DEMO_EMAIL = "hr@acme.test".freeze
 
     attr_reader :count, :outlier_count, :random
 

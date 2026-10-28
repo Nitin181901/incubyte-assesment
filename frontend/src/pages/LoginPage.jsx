@@ -23,7 +23,7 @@ import BrandMark from '../components/BrandMark'
 import DocumentTitle from '../components/DocumentTitle'
 import { colors } from '../theme/tokens'
 
-const DEMO_EMAIL = 'demo@acme.test'
+const DEMO_EMAIL = 'hr@acme.test'
 const DEMO_PASSWORD = 'Password123!'
 
 const POINTS = [

@@ -8,7 +8,7 @@ import { NAV_ITEMS } from './navItems'
 
 vi.mock('../auth/AuthContext', () => ({
   useAuth: () => ({
-    user: { name: 'HR Manager', email: 'demo@acme.test' },
+    user: { name: 'HR Manager', email: 'hr@acme.test' },
     logout: vi.fn(),
     loading: false,
     isAuthenticated: true,
