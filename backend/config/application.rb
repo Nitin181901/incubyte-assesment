@@ -40,5 +40,10 @@ module Gen
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Serve the Vite-built SPA from public/ (index.html + assets).
+    config.public_file_server.enabled = true
+    config.middleware.use ActionDispatch::Static, Rails.public_path.to_s
   end
 end
+

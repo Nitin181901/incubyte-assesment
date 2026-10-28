@@ -23,4 +23,11 @@ Rails.application.routes.draw do
       get "stats/outliers", to: "stats#outliers"
     end
   end
+
+  # SPA fallback: non-API GETs serve the Vite build from public/index.html.
+  get "*path", to: "fallback#index", constraints: ->(req) {
+    !req.path.start_with?("/backend", "/up", "/rails")
+  }
+  root "fallback#index"
 end
+
