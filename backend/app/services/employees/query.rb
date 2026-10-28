@@ -1,6 +1,7 @@
 module Employees
   class Query
-    SORT_WHITELIST = %w[name salary_usd hired_on country job_title department].freeze
+    SORT_WHITELIST = %w[name salary salary_usd hired_on country job_title department].freeze
+
 
     class InvalidSort < StandardError; end
 
@@ -65,8 +66,9 @@ module Employees
         relation.order(Arel.sql("employees.last_name #{dir}, employees.first_name #{dir}"))
       when "country"
         relation.left_joins(:country).order(Arel.sql("countries.code #{dir}"))
-      when "salary_usd", "hired_on", "job_title", "department"
+      when "salary", "salary_usd", "hired_on", "job_title", "department"
         relation.order(Arel.sql("employees.#{sort} #{dir}"))
+
       else
         relation
       end

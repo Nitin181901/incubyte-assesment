@@ -33,19 +33,20 @@ export async function api(path, options = {}) {
   const token = getToken()
   if (token) headers.Authorization = `Bearer ${token}`
 
+  const { body: requestBody, headers: _ignored, ...rest } = options
   const response = await fetch(`${BASE}${path}`, {
-    ...options,
+    ...rest,
     headers,
-    body: options.body != null ? JSON.stringify(options.body) : undefined,
+    body: requestBody != null ? JSON.stringify(requestBody) : undefined,
   })
 
-  let body = null
+  let data = null
   const text = await response.text()
   if (text) {
     try {
-      body = JSON.parse(text)
+      data = JSON.parse(text)
     } catch {
-      body = { error: text }
+      data = { error: text }
     }
   }
 
@@ -56,8 +57,8 @@ export async function api(path, options = {}) {
         window.location.assign('/login')
       }
     }
-    throw new ApiError(response.status, body || {})
+    throw new ApiError(response.status, data || {})
   }
 
-  return body
+  return data
 }
