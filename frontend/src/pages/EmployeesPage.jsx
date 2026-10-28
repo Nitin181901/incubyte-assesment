@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Alert, Snackbar, Stack, Typography } from '@mui/material'
+import { Alert, Button, Snackbar, Stack } from '@mui/material'
+import DocumentTitle from '../components/DocumentTitle'
+import PageHeader from '../components/PageHeader'
 import { downloadTemplate, exportEmployeesCsv } from '../employees/csv'
 import DeleteEmployeeDialog from '../employees/DeleteEmployeeDialog'
 import EmployeeFilters from '../employees/EmployeeFilters'
@@ -8,6 +10,7 @@ import EmployeeTable from '../employees/EmployeeTable'
 import ImportEmployeesDialog from '../employees/ImportEmployeesDialog'
 import SalaryHistoryDrawer from '../employees/SalaryHistoryDrawer'
 import { useEmployees, useMetaFilters } from '../employees/useEmployees'
+import { peopleMatchLabel } from '../utils/display'
 
 export default function EmployeesPage() {
   const { filters, setFilters, clearFilters, data, meta, loading, error, refresh } = useEmployees()
@@ -47,23 +50,50 @@ export default function EmployeesPage() {
 
   return (
     <Stack spacing={2}>
-      <Typography variant="h5">Employees</Typography>
+      <DocumentTitle title="Employees" />
+      <PageHeader
+        title="Employees"
+        subtitle={peopleMatchLabel(meta.total)}
+        actions={
+          <>
+            <Button onClick={downloadTemplate} sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+              Download template
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => setImportOpen(true)}
+              sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
+              Import CSV
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={handleExport}
+              disabled={exporting}
+              sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
+              {exporting ? 'Exporting…' : 'Export CSV'}
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setEditing(null)
+                setFormOpen(true)
+              }}
+              sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
+              Add employee
+            </Button>
+          </>
+        }
+      />
 
       <EmployeeFilters
         filters={filters}
         meta={filterMeta}
         onChange={(patch) => setFilters(patch)}
         onClear={clearFilters}
-        onAdd={() => {
-          setEditing(null)
-          setFormOpen(true)
-        }}
-        onExport={handleExport}
-        onImport={() => setImportOpen(true)}
-        onDownloadTemplate={downloadTemplate}
-        exporting={exporting}
       />
-
 
       <EmployeeTable
         rows={data}
@@ -126,7 +156,6 @@ export default function EmployeesPage() {
       />
 
       <Snackbar
-
         open={snack.open}
         autoHideDuration={4000}
         onClose={() => setSnack((s) => ({ ...s, open: false }))}

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
+import { ThemeModeProvider } from '../theme'
 import EmployeeTable from './EmployeeTable'
 
 const rows = [
@@ -30,25 +31,28 @@ const rows = [
 describe('EmployeeTable', () => {
   it('renders rows and pagination meta', () => {
     render(
-      <EmployeeTable
-        rows={rows}
-        meta={{ page: 2, per_page: 25, total: 52, total_pages: 3 }}
-        loading={false}
-        error={null}
-        sort="name"
-        dir="asc"
-        onSort={vi.fn()}
-        onPageChange={vi.fn()}
-        onPerPageChange={vi.fn()}
-        onRetry={vi.fn()}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
-        onHistory={vi.fn()}
-      />,
+      <ThemeModeProvider>
+        <EmployeeTable
+          rows={rows}
+          meta={{ page: 2, per_page: 25, total: 52, total_pages: 3 }}
+          loading={false}
+          error={null}
+          sort="name"
+          dir="asc"
+          onSort={vi.fn()}
+          onPageChange={vi.fn()}
+          onPerPageChange={vi.fn()}
+          onRetry={vi.fn()}
+          onEdit={vi.fn()}
+          onDelete={vi.fn()}
+          onHistory={vi.fn()}
+        />
+      </ThemeModeProvider>,
     )
 
     expect(screen.getByText('Alice Anderson')).toBeInTheDocument()
     expect(screen.getByText('Bob Baker')).toBeInTheDocument()
     expect(screen.getByText(/52/)).toBeInTheDocument()
+    expect(screen.getByText('Engineering')).toBeInTheDocument()
   })
 })

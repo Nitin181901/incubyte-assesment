@@ -1,10 +1,12 @@
 import {
   Alert,
+  Avatar,
   Box,
   Button,
-  CircularProgress,
+  Chip,
   IconButton,
-  Paper,
+  Skeleton,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -19,13 +21,14 @@ import {
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import HistoryIcon from '@mui/icons-material/History'
-
+import GlassCard from '../components/GlassCard'
+import { avatarColor, countryFlag, departmentStyle, initials } from '../utils/display'
 import { employeeName, formatDate, formatLocalSalary, formatUsd } from './formatters'
 
 const COLUMNS = [
-  { id: 'name', label: 'Name' },
+  { id: 'name', label: 'Employee' },
   { id: 'department', label: 'Department' },
-  { id: 'job_title', label: 'Job title' },
+  { id: 'job_title', label: 'Level' },
   { id: 'country', label: 'Country' },
   { id: 'salary', label: 'Salary (local)', align: 'right' },
   { id: 'salary_usd', label: 'Salary (USD)', align: 'right' },
@@ -64,7 +67,7 @@ export default function EmployeeTable({
   }
 
   return (
-    <Paper variant="outlined">
+    <GlassCard sx={{ p: 0, overflow: 'hidden' }}>
       <TableContainer>
         <Table size="small" stickyHeader>
           <TableHead>
@@ -85,11 +88,18 @@ export default function EmployeeTable({
           </TableHead>
           <TableBody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={8} align="center" sx={{ py: 6 }}>
-                  <CircularProgress size={28} />
-                </TableCell>
-              </TableRow>
+              Array.from({ length: 6 }).map((_, i) => (
+                <TableRow key={`sk-${i}`}>
+                  {COLUMNS.map((col) => (
+                    <TableCell key={col.id}>
+                      <Skeleton height={28} />
+                    </TableCell>
+                  ))}
+                  <TableCell>
+                    <Skeleton height={28} />
+                  </TableCell>
+                </TableRow>
+              ))
             ) : rows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} align="center" sx={{ py: 6 }}>
@@ -97,51 +107,96 @@ export default function EmployeeTable({
                 </TableCell>
               </TableRow>
             ) : (
-              rows.map((employee) => (
-                <TableRow
-                  key={employee.id}
-                  hover
-                  tabIndex={0}
-                  sx={{ cursor: 'pointer' }}
-                  onClick={() => onRowClick?.(employee)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      onRowClick?.(employee)
-                    }
-                  }}
-                >
-                  <TableCell>{employeeName(employee)}</TableCell>
-                  <TableCell>{employee.department}</TableCell>
-                  <TableCell>{employee.job_title}</TableCell>
-                  <TableCell>{employee.country?.code}</TableCell>
-                  <TableCell align="right">
-                    {formatLocalSalary(employee.salary, employee.country?.currency_code)}
-                  </TableCell>
-                  <TableCell align="right">{formatUsd(employee.salary_usd)}</TableCell>
-                  <TableCell>{formatDate(employee.hired_on)}</TableCell>
-                  <TableCell align="right" onClick={(e) => e.stopPropagation()}>
-                    <Box sx={{ display: 'inline-flex' }}>
-                      <Tooltip title="Salary history">
-                        <IconButton size="small" aria-label="Salary history" onClick={() => onHistory(employee)}>
-                          <HistoryIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Edit">
-                        <IconButton size="small" aria-label="Edit employee" onClick={() => onEdit(employee)}>
-                          <EditOutlinedIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete">
-                        <IconButton size="small" aria-label="Delete employee" onClick={() => onDelete(employee)}>
-                          <DeleteOutlinedIcon fontSize="small" />
-                        </IconButton>
-
-                      </Tooltip>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))
+              rows.map((employee) => {
+                const name = employeeName(employee)
+                const dept = departmentStyle(employee.department)
+                return (
+                  <TableRow
+                    key={employee.id}
+                    hover
+                    tabIndex={0}
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => onRowClick?.(employee)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        onRowClick?.(employee)
+                      }
+                    }}
+                  >
+                    <TableCell>
+                      <Stack direction="row" spacing={1.25} alignItems="center">
+                        <Avatar
+                          sx={{
+                            width: 36,
+                            height: 36,
+                            fontSize: 13,
+                            fontWeight: 700,
+                            bgcolor: avatarColor(name),
+                          }}
+                        >
+                          {initials(name)}
+                        </Avatar>
+                        <Box sx={{ minWidth: 0 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 700 }} noWrap>
+                            {name}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary" noWrap>
+                            {employee.job_title || '—'}
+                          </Typography>
+                        </Box>
+                      </Stack>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        size="small"
+                        label={employee.department || '—'}
+                        sx={{ bgcolor: dept.bg, color: dept.fg, fontWeight: 600 }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Chip size="small" variant="outlined" label={employee.job_title || '—'} />
+                    </TableCell>
+                    <TableCell>
+                      <Stack direction="row" spacing={0.75} alignItems="center">
+                        <span aria-hidden>{countryFlag(employee.country?.code)}</span>
+                        <Typography variant="body2">{employee.country?.code || '—'}</Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">
+                      {formatLocalSalary(employee.salary, employee.country?.currency_code)}
+                    </TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 700 }}>
+                      {formatUsd(employee.salary_usd)}
+                    </TableCell>
+                    <TableCell>{formatDate(employee.hired_on)}</TableCell>
+                    <TableCell align="right" onClick={(e) => e.stopPropagation()}>
+                      <Box sx={{ display: 'inline-flex' }}>
+                        <Tooltip title="Salary history">
+                          <IconButton size="small" aria-label="Salary history" onClick={() => onHistory(employee)}>
+                            <HistoryIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Edit">
+                          <IconButton size="small" aria-label="Edit employee" onClick={() => onEdit(employee)}>
+                            <EditOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                          <IconButton
+                            size="small"
+                            aria-label="Delete employee"
+                            onClick={() => onDelete(employee)}
+                            sx={{ '&:hover': { color: 'error.main' } }}
+                          >
+                            <DeleteOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                )
+              })
             )}
           </TableBody>
         </Table>
@@ -155,6 +210,6 @@ export default function EmployeeTable({
         onRowsPerPageChange={(e) => onPerPageChange(Number(e.target.value))}
         rowsPerPageOptions={[25, 50, 100]}
       />
-    </Paper>
+    </GlassCard>
   )
 }

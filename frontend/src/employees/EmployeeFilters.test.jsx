@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { ThemeModeProvider } from '../theme'
 import EmployeeFilters from './EmployeeFilters'
 
 describe('EmployeeFilters', () => {
@@ -17,13 +18,14 @@ describe('EmployeeFilters', () => {
     const onChange = vi.fn()
 
     render(
-      <EmployeeFilters
-        filters={{ q: '' }}
-        meta={{ countries: [], departments: [], job_titles: [] }}
-        onChange={onChange}
-        onClear={vi.fn()}
-        onAdd={vi.fn()}
-      />,
+      <ThemeModeProvider>
+        <EmployeeFilters
+          filters={{ q: '' }}
+          meta={{ countries: [], departments: [], job_titles: [] }}
+          onChange={onChange}
+          onClear={vi.fn()}
+        />
+      </ThemeModeProvider>,
     )
 
     await user.type(screen.getByRole('textbox', { name: /search employees/i }), 'alice')

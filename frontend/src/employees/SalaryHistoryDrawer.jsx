@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react'
 import {
   Box,
+  Button,
   CircularProgress,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
 } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
 import { api } from '../backend/client'
 import { employeeName, formatDate, formatLocalSalary } from './formatters'
 
@@ -42,65 +45,47 @@ export default function SalaryHistoryDrawer({ open, employee, onClose }) {
     }
   }, [open, employee])
 
+  const name = employee ? employeeName(employee) : ''
+
   return (
-    <Drawer
-      anchor="right"
-      open={open}
-      onClose={onClose}
-      PaperProps={{ sx: { width: { xs: '100%', sm: 420 } }, role: 'dialog', 'aria-labelledby': 'salary-history-title' }}
-    >
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography id="salary-history-title" variant="h6">
-            Salary history
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {employee ? employeeName(employee) : ''}
-          </Typography>
-        </Box>
-        <IconButton aria-label="Close history" onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      </Box>
-      <Divider />
-      {loading ? (
-        <Box sx={{ display: 'grid', placeItems: 'center', py: 6 }}>
-          <CircularProgress size={28} />
-        </Box>
-      ) : error ? (
-        <Typography color="error" sx={{ p: 2 }}>
-          {error}
-        </Typography>
-      ) : rows.length === 0 ? (
-        <Typography color="text.secondary" sx={{ p: 2 }}>
-          No salary changes yet.
-        </Typography>
-      ) : (
-        <List dense>
-          {rows.map((change) => (
-            <ListItem key={change.id} alignItems="flex-start" divider>
-              <ListItemText
-                primary={`${formatLocalSalary(change.old_salary, change.currency_code)} → ${formatLocalSalary(change.new_salary, change.currency_code)}`}
-                secondary={
-                  <>
-                    <Typography component="span" variant="body2" display="block">
-                      {formatDate(change.created_at)}
-                    </Typography>
-                    {change.reason ? (
-                      <Typography component="span" variant="body2" display="block">
-                        Reason: {change.reason}
-                      </Typography>
-                    ) : null}
-                    <Typography component="span" variant="body2" display="block">
-                      Changed by: {change.changed_by_id != null ? `User #${change.changed_by_id}` : 'System'}
-                    </Typography>
-                  </>
-                }
-              />
-            </ListItem>
-          ))}
-        </List>
-      )}
-    </Drawer>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" aria-labelledby="salary-history-title">
+      <DialogTitle id="salary-history-title">Salary history: {name}</DialogTitle>
+      <DialogContent>
+        {loading ? (
+          <Box sx={{ display: 'grid', placeItems: 'center', py: 6 }}>
+            <CircularProgress size={28} />
+          </Box>
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : rows.length === 0 ? (
+          <Typography color="text.secondary">No salary changes yet.</Typography>
+        ) : (
+          <Table size="small" aria-label="Salary history">
+            <TableHead>
+              <TableRow>
+                <TableCell>Effective</TableCell>
+                <TableCell>Salary</TableCell>
+                <TableCell>Reason</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((change) => (
+                <TableRow key={change.id}>
+                  <TableCell>{formatDate(change.created_at)}</TableCell>
+                  <TableCell>
+                    {formatLocalSalary(change.old_salary, change.currency_code)} →{' '}
+                    {formatLocalSalary(change.new_salary, change.currency_code)}
+                  </TableCell>
+                  <TableCell>{change.reason || '—'}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Close</Button>
+      </DialogActions>
+    </Dialog>
   )
 }
