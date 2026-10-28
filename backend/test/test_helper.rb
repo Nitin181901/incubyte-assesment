@@ -13,3 +13,11 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
   end
 end
+
+class ActionDispatch::IntegrationTest
+  def auth_headers(user = users(:one))
+    token = user.generate_token_for(:api)
+    { "Authorization" => "Bearer #{token}" }
+  end
+end
+

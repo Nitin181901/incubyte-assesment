@@ -7,6 +7,20 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :session, only: [ :create ]
       get "me", to: "me#show"
+
+      resources :employees do
+        resources :salary_changes, only: [ :index ]
+      end
+
+      get "meta/filters", to: "meta#filters"
+
+      resources :countries, param: :code, only: [ :index, :update ]
+
+      get "stats/summary", to: "stats#summary"
+      get "stats/breakdown", to: "stats#breakdown"
+      get "stats/distribution", to: "stats#distribution"
+      get "stats/tenure", to: "stats#tenure"
+      get "stats/outliers", to: "stats#outliers"
     end
   end
 end

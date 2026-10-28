@@ -1,7 +1,8 @@
 module Backend
   module V1
-    class SessionsController < ApplicationController
+    class SessionsController < BaseController
       skip_before_action :authenticate, only: :create
+
 
       def create
         user = User.authenticate_by(email: params[:email], password: params[:password])
@@ -12,8 +13,9 @@ module Backend
             user: { id: user.id, email: user.email, name: user.name }
           }, status: :ok
         else
-          render json: { error: "unauthorized" }, status: :unauthorized
+          render json: { error: "unauthorized", details: {} }, status: :unauthorized
         end
+
       end
     end
   end

@@ -12,7 +12,7 @@ module Authenticatable
     @current_user = User.find_by_token_for(:api, token) if token.present?
     return if @current_user
 
-    render json: { error: "unauthorized" }, status: :unauthorized
+    render json: { error: "unauthorized", details: {} }, status: :unauthorized
   end
 
   def bearer_token

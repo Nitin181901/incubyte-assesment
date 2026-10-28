@@ -1,6 +1,6 @@
 module Backend
   module V1
-    class MeController < ApplicationController
+    class MeController < BaseController
       def show
         render json: {
           id: current_user.id,
@@ -11,3 +11,4 @@ module Backend
     end
   end
 end
+
