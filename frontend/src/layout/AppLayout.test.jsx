@@ -3,7 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 import { ThemeModeProvider } from '../theme'
-import AppLayout, { NAV_ITEMS } from './AppLayout'
+import AppLayout from './AppLayout'
+import { NAV_ITEMS } from './navItems'
 
 vi.mock('../auth/AuthContext', () => ({
   useAuth: () => ({

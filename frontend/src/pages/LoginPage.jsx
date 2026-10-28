@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import MailOutlineIcon from '@mui/icons-material/MailOutline'
+import MailOutlineIcon from '@mui/icons-material/MailOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined'
@@ -173,8 +173,8 @@ export default function LoginPage() {
                 key={text}
                 direction="row"
                 spacing={1.25}
-                alignItems="center"
                 sx={{
+                  alignItems: 'center',
                   px: 1.5,
                   py: 1.1,
                   borderRadius: 999,

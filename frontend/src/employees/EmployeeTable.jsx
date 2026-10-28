@@ -125,7 +125,7 @@ export default function EmployeeTable({
                     }}
                   >
                     <TableCell>
-                      <Stack direction="row" spacing={1.25} alignItems="center">
+                      <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
                         <Avatar
                           sx={{
                             width: 36,
@@ -158,7 +158,7 @@ export default function EmployeeTable({
                       <Chip size="small" variant="outlined" label={employee.job_title || '—'} />
                     </TableCell>
                     <TableCell>
-                      <Stack direction="row" spacing={0.75} alignItems="center">
+                      <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
                         <span aria-hidden>{countryFlag(employee.country?.code)}</span>
                         <Typography variant="body2">{employee.country?.code || '—'}</Typography>
                       </Stack>

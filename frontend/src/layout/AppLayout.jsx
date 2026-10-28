@@ -16,9 +16,6 @@ import {
 } from '@mui/material'
 import { alpha, useTheme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
-import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline'
-import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -31,12 +28,7 @@ import BrandMark from '../components/BrandMark'
 import { useThemeMode } from '../theme'
 import { layout, SIDEBAR_STORAGE_KEY } from '../theme/tokens'
 import { avatarColor, initials } from '../utils/display'
-
-export const NAV_ITEMS = [
-  { label: 'Overview', to: '/', icon: DashboardOutlinedIcon },
-  { label: 'Employees', to: '/employees', icon: PeopleOutlineIcon },
-  { label: 'Countries', to: '/settings/countries', icon: PublicOutlinedIcon },
-]
+import { NAV_ITEMS } from './navItems'
 
 function readCollapsed() {
   try {
@@ -130,9 +122,9 @@ function SidebarUser({ collapsed }) {
       <Stack
         direction="row"
         spacing={1.25}
-        alignItems="center"
-        justifyContent={collapsed ? 'center' : 'flex-start'}
         sx={{
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'flex-start',
           p: collapsed ? 0.5 : 1,
           borderRadius: 3,
           bgcolor: 'rgba(255,255,255,0.08)',

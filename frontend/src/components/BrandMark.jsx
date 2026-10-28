@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from '@mui/material'
 
 export default function BrandMark({ collapsed = false, light = false }) {
   return (
-    <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
+    <Stack direction="row" spacing={1.5} sx={{ minWidth: 0, alignItems: 'center' }}>
       <Box
         sx={{
           width: 40,

@@ -47,7 +47,7 @@ export default function TenureSection({ refreshKey }) {
               tickFormatter={(v) => formatUsd(v)}
             />
             <Tooltip
-              formatter={(value, name, props) => {
+              formatter={(value, name) => {
                 if (name === 'median') return [formatUsd(value), 'Median']
                 return [value, name]
               }}

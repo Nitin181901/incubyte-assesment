@@ -1,4 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+﻿import { createElement } from 'react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { ThemeModeProvider, useThemeMode } from './ThemeModeProvider'
 import { buildTheme } from './theme'
 import { THEME_STORAGE_KEY } from './tokens'
 
@@ -16,33 +19,19 @@ describe('buildTheme', () => {
 describe('ThemeModeProvider persistence', () => {
   beforeEach(() => {
     localStorage.clear()
-    vi.resetModules()
   })
 
-  it('persists mode to localStorage when toggled', async () => {
-    const { render, screen } = await import('@testing-library/react')
-    const userEvent = (await import('@testing-library/user-event')).default
-    const { ThemeModeProvider, useThemeMode } = await import('./ThemeModeProvider')
-
+  it('persists mode to localStorage when toggled', () => {
     function Probe() {
       const { mode, toggleMode } = useThemeMode()
-      return (
-        <button type="button" onClick={toggleMode}>
-          {mode}
-        </button>
-      )
+      return createElement('button', { type: 'button', onClick: toggleMode }, mode)
     }
 
-    render(
-      <ThemeModeProvider>
-        <Probe />
-      </ThemeModeProvider>,
-    )
+    render(createElement(ThemeModeProvider, null, createElement(Probe)))
 
-    const user = userEvent.setup()
     const btn = screen.getByRole('button')
     const initial = btn.textContent
-    await user.click(btn)
+    fireEvent.click(btn)
     const next = initial === 'light' ? 'dark' : 'light'
     expect(btn).toHaveTextContent(next)
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe(next)

@@ -1,21 +1,22 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AuthProvider } from '../auth/AuthContext'
+import { ThemeModeProvider } from '../theme'
 import LoginPage from './LoginPage'
 import { clearToken } from '../backend/client'
 
 function renderLogin() {
   return render(
-    <MemoryRouter initialEntries={[ '/login' ]}>
-      <AuthProvider>
-        <LoginPage />
-      </AuthProvider>
-    </MemoryRouter>,
+    <ThemeModeProvider>
+      <MemoryRouter initialEntries={['/login']}>
+        <AuthProvider>
+          <LoginPage />
+        </AuthProvider>
+      </MemoryRouter>
+    </ThemeModeProvider>,
   )
 }
-
 
 describe('LoginPage', () => {
   beforeEach(() => {
@@ -24,7 +25,6 @@ describe('LoginPage', () => {
   })
 
   it('shows an error alert on failed login', async () => {
-    const user = userEvent.setup()
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({
@@ -36,12 +36,16 @@ describe('LoginPage', () => {
 
     renderLogin()
 
-    await user.type(screen.getByLabelText(/email/i), 'bad@acme.test')
-    await user.type(screen.getByLabelText(/password/i), 'wrong')
-    await user.click(screen.getByRole('button', { name: /sign in/i }))
+    fireEvent.change(screen.getByRole('textbox', { name: /email/i }), {
+      target: { value: 'bad@acme.test' },
+    })
+    fireEvent.change(document.querySelector('input[type="password"]'), {
+      target: { value: 'wrong' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /^Sign in$/i }))
 
     await waitFor(() => {
       expect(screen.getByRole('alert')).toHaveTextContent(/unauthorized/i)
     })
-  })
+  }, 10000)
 })

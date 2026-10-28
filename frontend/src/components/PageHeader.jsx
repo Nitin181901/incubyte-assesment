@@ -5,9 +5,13 @@ export default function PageHeader({ title, subtitle, actions }) {
     <Stack
       direction={{ xs: 'column', sm: 'row' }}
       spacing={2}
-      alignItems={{ sm: 'flex-start' }}
-      justifyContent="space-between"
-      sx={{ mb: 2.5, flexWrap: 'wrap', gap: 1.5 }}
+      sx={{
+        mb: 2.5,
+        flexWrap: 'wrap',
+        gap: 1.5,
+        alignItems: { sm: 'flex-start' },
+        justifyContent: 'space-between',
+      }}
     >
       <Box sx={{ minWidth: 0 }}>
         <Typography variant="h4" component="h1">

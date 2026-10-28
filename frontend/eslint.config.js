@@ -35,7 +35,10 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true, allowExportNames: ['useAuth', 'useThemeMode'] },
+        {
+          allowConstantExport: true,
+          allowExportNames: ['useAuth', 'useThemeMode', 'NAV_ITEMS'],
+        },
       ],
       'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },

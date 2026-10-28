@@ -12,8 +12,12 @@ function readStoredMode() {
   } catch {
     /* ignore */
   }
-  if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark'
+  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    try {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark'
+    } catch {
+      /* ignore */
+    }
   }
   return 'light'
 }
