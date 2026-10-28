@@ -43,7 +43,30 @@ module Backend
         head :no_content
       end
 
+      def export
+        query = Employees::Query.new(params: index_params)
+        filename = "employees-#{Date.current.iso8601}.csv"
+        response.headers["Content-Type"] = "text/csv; charset=utf-8"
+        response.headers["Content-Disposition"] = "attachment; filename=\"#{filename}\""
+        # Enumerator response_body: Rails writes each yielded chunk (no ActionController::Live).
+        self.response_body = Employees::CsvExporter.new(query.export_scope).enum
+      rescue Employees::Query::InvalidSort => e
+        render_error(e.message, status: :unprocessable_entity, details: { sort: [ "is not included in the list" ] })
+      end
+
+      def import
+        result = Employees::CsvImporter.new(
+          file: params[:file],
+          dry_run: ActiveModel::Type::Boolean.new.cast(params[:dry_run]),
+          changed_by: current_user
+        ).call
+        render json: result
+      rescue Employees::CsvImporter::Error => e
+        render_error(e.message, status: :unprocessable_entity)
+      end
+
       private
+
 
       def set_employee
         @employee = Employee.includes(:country).find(params[:id])

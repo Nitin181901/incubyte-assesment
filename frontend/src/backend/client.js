@@ -24,21 +24,42 @@ export class ApiError extends Error {
 }
 
 export async function api(path, options = {}) {
+  const { body: requestBody, headers: extraHeaders, rawResponse = false, ...rest } = options
+  const isFormData = typeof FormData !== 'undefined' && requestBody instanceof FormData
+
   const headers = {
     Accept: 'application/json',
-    ...(options.body ? { 'Content-Type': 'application/json' } : {}),
-    ...options.headers,
+    ...(!isFormData && requestBody != null ? { 'Content-Type': 'application/json' } : {}),
+    ...extraHeaders,
   }
 
   const token = getToken()
   if (token) headers.Authorization = `Bearer ${token}`
 
-  const { body: requestBody, headers: _ignored, ...rest } = options
   const response = await fetch(`${BASE}${path}`, {
     ...rest,
     headers,
-    body: requestBody != null ? JSON.stringify(requestBody) : undefined,
+    body: requestBody == null ? undefined : isFormData ? requestBody : JSON.stringify(requestBody),
   })
+
+  if (rawResponse) {
+    if (!response.ok) {
+      let data = null
+      try {
+        data = JSON.parse(await response.text())
+      } catch {
+        data = {}
+      }
+      if (response.status === 401) {
+        clearToken()
+        if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login')) {
+          window.location.assign('/login')
+        }
+      }
+      throw new ApiError(response.status, data || {})
+    }
+    return response
+  }
 
   let data = null
   const text = await response.text()
@@ -62,3 +83,4 @@ export async function api(path, options = {}) {
 
   return data
 }
+

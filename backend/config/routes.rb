@@ -9,8 +9,13 @@ Rails.application.routes.draw do
       get "me", to: "me#show"
 
       resources :employees do
+        collection do
+          get :export
+          post :import
+        end
         resources :salary_changes, only: [ :index ]
       end
+
 
       get "meta/filters", to: "meta#filters"
 

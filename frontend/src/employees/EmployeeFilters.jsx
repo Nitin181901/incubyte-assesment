@@ -13,7 +13,12 @@ export default function EmployeeFilters({
   onChange,
   onClear,
   onAdd,
+  onExport,
+  onImport,
+  onDownloadTemplate,
+  exporting = false,
 }) {
+
   const [search, setSearch] = useState(filters.q || '')
 
   useEffect(() => {
@@ -105,6 +110,11 @@ export default function EmployeeFilters({
         />
         <Box sx={{ flexGrow: 1 }} />
         <Button onClick={onClear}>Clear filters</Button>
+        <Button onClick={onDownloadTemplate}>Download template</Button>
+        <Button onClick={onExport} disabled={exporting}>
+          {exporting ? 'Exporting…' : 'Export CSV'}
+        </Button>
+        <Button onClick={onImport}>Import CSV</Button>
         <Button variant="contained" onClick={onAdd}>
           Add employee
         </Button>
@@ -112,3 +122,4 @@ export default function EmployeeFilters({
     </Stack>
   )
 }
+

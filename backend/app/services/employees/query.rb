@@ -16,8 +16,12 @@ module Employees
     def call
       relation = filtered
       @total = relation.count
-      relation = apply_sort(relation)
-      relation.includes(:country).offset(offset).limit(per_page)
+      apply_sort(relation).includes(:country).offset(offset).limit(per_page)
+    end
+
+    # Filtered + sorted scope without pagination (for CSV export).
+    def export_scope
+      apply_sort(filtered).includes(:country)
     end
 
     def meta
@@ -32,6 +36,7 @@ module Employees
     private
 
     def filtered
+
       relation = @scope.all
       relation = relation.search(@params[:q]) if @params[:q].present?
 
