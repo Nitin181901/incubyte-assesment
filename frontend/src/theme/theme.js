@@ -1,68 +1,58 @@
-import { alpha, createTheme } from '@mui/material/styles'
-import { colors, glass, gradients, radii } from './tokens'
+import { createTheme } from '@mui/material/styles'
+import { colors, radii, shadows } from './tokens'
 
 export function buildTheme(mode = 'light') {
   const isDark = mode === 'dark'
-  const g = isDark ? glass.dark : glass.light
 
   return createTheme({
     palette: {
       mode,
       primary: {
-        main: colors.indigo,
-        light: colors.violet,
-        dark: '#4F46E5',
+        main: colors.primary,
+        dark: colors.primaryHover,
         contrastText: colors.white,
       },
       secondary: {
-        main: colors.pink,
-        contrastText: colors.white,
+        main: colors.secondary,
+        contrastText: colors.slate950,
       },
-      error: { main: colors.coral },
-      warning: { main: colors.orange },
-      info: { main: colors.cyan },
-      success: { main: colors.teal },
+      error: { main: colors.danger },
+      success: { main: colors.success },
+      warning: { main: colors.secondary },
       text: {
-        primary: isDark ? '#F8FAFC' : colors.navy,
-        secondary: isDark ? '#94A3B8' : colors.muted,
+        primary: isDark ? '#F8FAFC' : colors.slate950,
+        secondary: isDark ? '#94A3B8' : colors.slate500,
       },
       background: {
-        default: isDark ? colors.darkBg : '#F5F3FF',
+        default: isDark ? colors.darkBg : colors.slate50,
         paper: isDark ? colors.darkPaper : colors.white,
       },
-      divider: isDark ? 'rgba(148, 163, 184, 0.16)' : 'rgba(99, 102, 241, 0.12)',
-      acme: {
-        indigo: colors.indigo,
-        violet: colors.violet,
-        pink: colors.pink,
-        cyan: colors.cyan,
-        teal: colors.teal,
-        orange: colors.orange,
-        coral: colors.coral,
-        navy: colors.navy,
-        muted: colors.muted,
-        gradient: gradients.primary,
-        heroGradient: gradients.hero,
-        sidebarGradient: gradients.sidebar,
-        textAccent: gradients.textAccent,
-        glassBg: g.bg,
-        glassBorder: g.border,
-        glassShadow: g.shadow,
-        glassBlur: g.blur,
+      divider: isDark ? 'rgba(148, 163, 184, 0.2)' : colors.slate200,
+      paylens: {
+        primary: colors.primary,
+        primaryHover: colors.primaryHover,
+        secondary: colors.secondary,
+        danger: colors.danger,
+        success: colors.success,
+        slate950: colors.slate950,
+        slate700: colors.slate700,
+        slate500: colors.slate500,
+        slate200: colors.slate200,
+        slate50: colors.slate50,
       },
     },
     typography: {
       fontFamily: '"Inter Variable", Inter, system-ui, sans-serif',
-      h1: { fontWeight: 800, letterSpacing: '-0.04em' },
-      h2: { fontWeight: 800, letterSpacing: '-0.03em' },
-      h3: { fontWeight: 750, letterSpacing: '-0.03em' },
-      h4: { fontWeight: 700, letterSpacing: '-0.02em' },
-      h5: { fontWeight: 700, letterSpacing: '-0.02em' },
-      h6: { fontWeight: 700, letterSpacing: '-0.015em' },
+      h1: { fontWeight: 750, letterSpacing: '-0.03em' },
+      h2: { fontWeight: 750, letterSpacing: '-0.02em' },
+      h3: { fontWeight: 700, letterSpacing: '-0.02em' },
+      h4: { fontWeight: 700, letterSpacing: '-0.015em' },
+      h5: { fontWeight: 700 },
+      h6: { fontWeight: 700 },
       button: { textTransform: 'none', fontWeight: 600 },
       overline: {
         fontWeight: 700,
-        letterSpacing: '0.12em',
+        letterSpacing: '0.1em',
         fontSize: '0.68rem',
       },
     },
@@ -72,6 +62,7 @@ export function buildTheme(mode = 'light') {
         styleOverrides: {
           body: {
             fontFamily: '"Inter Variable", Inter, system-ui, sans-serif',
+            backgroundColor: isDark ? colors.darkBg : colors.slate50,
           },
         },
       },
@@ -85,31 +76,17 @@ export function buildTheme(mode = 'light') {
             whiteSpace: 'nowrap',
           },
           containedPrimary: {
-            backgroundImage: gradients.primary,
-            boxShadow: `0 8px 20px ${alpha(colors.indigo, 0.35)}`,
-            '&:hover': {
-              backgroundImage: gradients.primaryHover,
-              boxShadow: `0 12px 28px ${alpha(colors.violet, 0.45)}`,
-            },
-            '&.Mui-disabled': {
-              backgroundImage: 'none',
-            },
+            backgroundColor: colors.primary,
+            '&:hover': { backgroundColor: colors.primaryHover },
           },
           outlined: {
-            borderRadius: radii.control,
-            borderColor: alpha(colors.indigo, isDark ? 0.45 : 0.28),
+            borderColor: isDark ? 'rgba(148,163,184,0.35)' : colors.slate200,
           },
         },
       },
-      MuiTextField: {
-        defaultProps: { size: 'small' },
-      },
       MuiOutlinedInput: {
         styleOverrides: {
-          root: {
-            borderRadius: radii.control,
-            backgroundColor: isDark ? alpha('#fff', 0.04) : alpha('#fff', 0.85),
-          },
+          root: { borderRadius: radii.control },
         },
       },
       MuiCard: {
@@ -117,40 +94,26 @@ export function buildTheme(mode = 'light') {
           root: {
             borderRadius: radii.card,
             backgroundImage: 'none',
-            backgroundColor: g.bg,
-            backdropFilter: `blur(${g.blur})`,
-            WebkitBackdropFilter: `blur(${g.blur})`,
-            border: g.border,
-            boxShadow: g.shadow,
+            backgroundColor: isDark ? colors.darkPaper : colors.white,
+            border: `1px solid ${isDark ? 'rgba(148,163,184,0.2)' : colors.slate200}`,
+            boxShadow: shadows.card,
           },
         },
       },
       MuiPaper: {
         styleOverrides: {
-          root: {
-            backgroundImage: 'none',
-          },
+          root: { backgroundImage: 'none' },
           outlined: {
             borderRadius: radii.card,
-            backgroundColor: g.bg,
-            backdropFilter: `blur(${g.blur})`,
-            WebkitBackdropFilter: `blur(${g.blur})`,
-            border: g.border,
-            boxShadow: g.shadow,
+            backgroundColor: isDark ? colors.darkPaper : colors.white,
+            border: `1px solid ${isDark ? 'rgba(148,163,184,0.2)' : colors.slate200}`,
+            boxShadow: shadows.card,
           },
         },
       },
       MuiDialog: {
         styleOverrides: {
-          paper: {
-            borderRadius: radii.card,
-            backgroundImage: 'none',
-          },
-        },
-      },
-      MuiChip: {
-        styleOverrides: {
-          root: { borderRadius: 10, fontWeight: 600 },
+          paper: { borderRadius: radii.card, backgroundImage: 'none' },
         },
       },
       MuiTableCell: {
@@ -158,18 +121,10 @@ export function buildTheme(mode = 'light') {
           head: {
             fontSize: '0.7rem',
             fontWeight: 700,
-            letterSpacing: '0.08em',
+            letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            color: isDark ? '#94A3B8' : colors.muted,
-            backgroundColor: isDark ? alpha('#0B1026', 0.6) : alpha('#fff', 0.65),
-          },
-        },
-      },
-      MuiTooltip: {
-        styleOverrides: {
-          tooltip: {
-            borderRadius: 10,
-            fontSize: '0.75rem',
+            color: isDark ? '#94A3B8' : colors.slate500,
+            backgroundColor: isDark ? colors.darkPaper : colors.white,
           },
         },
       },

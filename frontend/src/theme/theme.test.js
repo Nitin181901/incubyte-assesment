@@ -11,8 +11,8 @@ describe('buildTheme', () => {
     const dark = buildTheme('dark')
     expect(light.palette.mode).toBe('light')
     expect(dark.palette.mode).toBe('dark')
-    expect(light.palette.primary.main).toBe('#6366F1')
-    expect(dark.palette.acme.indigo).toBe('#6366F1')
+    expect(light.palette.primary.main).toBe('#0D9488')
+    expect(dark.palette.paylens.primary).toBe('#0D9488')
   })
 })
 
