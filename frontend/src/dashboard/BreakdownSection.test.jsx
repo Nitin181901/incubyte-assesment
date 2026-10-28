@@ -1,7 +1,16 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ThemeModeProvider } from '../theme'
 import BreakdownSection from './BreakdownSection'
+
+vi.mock('recharts', async () => {
+  const actual = await vi.importActual('recharts')
+  return {
+    ...actual,
+    ResponsiveContainer: ({ children }) => <div data-testid="responsive">{children}</div>,
+  }
+})
 
 describe('BreakdownSection', () => {
   beforeEach(() => {
@@ -31,7 +40,11 @@ describe('BreakdownSection', () => {
     })
     vi.stubGlobal('fetch', fetchMock)
 
-    render(<BreakdownSection refreshKey={0} />)
+    render(
+      <ThemeModeProvider>
+        <BreakdownSection refreshKey={0} />
+      </ThemeModeProvider>,
+    )
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(

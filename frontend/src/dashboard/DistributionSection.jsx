@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MenuItem, TextField, Box } from '@mui/material'
+import { Box, MenuItem, TextField, useTheme } from '@mui/material'
 import {
   Bar,
   BarChart,
@@ -9,32 +9,33 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import ChartCard from '../components/ChartCard'
 import { formatCompactUsd } from './formatters'
-import SectionCard from './SectionCard'
 import { useStatsResource } from './useStats'
 
 export default function DistributionSection({ refreshKey }) {
+  const theme = useTheme()
   const [bins, setBins] = useState(20)
   const { data, loading, error, refresh } = useStatsResource(
     () => `/stats/distribution?bins=${bins}`,
     [bins, refreshKey],
   )
 
-  const chartData = (data?.data || []).map((bin, index) => ({
-    index,
-    label: `${formatCompactUsd(bin.from)}–${formatCompactUsd(bin.to)}`,
+  const rows = (data?.data || []).map((bin) => ({
+    ...bin,
     from: Number(bin.from),
-    to: Number(bin.to),
-    count: Number(bin.count),
+    count: Number(bin.count) || 0,
   }))
 
   return (
-    <SectionCard
-      title="Salary distribution"
-      subtitle="Histogram of salary_usd"
+    <ChartCard
+      title="How are salaries distributed?"
+      subtitle="Headcount by salary band (USD)."
+      footnote={`Histogram with ${bins} bins.`}
       loading={loading}
       error={error}
       onRetry={refresh}
+      empty={rows.length === 0 ? 'No distribution data.' : null}
       action={
         <TextField
           select
@@ -42,9 +43,9 @@ export default function DistributionSection({ refreshKey }) {
           label="Bins"
           value={bins}
           onChange={(e) => setBins(Number(e.target.value))}
-          sx={{ width: 100 }}
+          sx={{ minWidth: 96, flexShrink: 0 }}
         >
-          {[ 10, 20, 40 ].map((n) => (
+          {[10, 20, 40].map((n) => (
             <MenuItem key={n} value={n}>
               {n}
             </MenuItem>
@@ -52,24 +53,29 @@ export default function DistributionSection({ refreshKey }) {
         </TextField>
       }
     >
-      <Box sx={{ width: '100%', height: 280 }} role="img" aria-label="Salary distribution histogram">
-        <ResponsiveContainer>
-          <BarChart data={chartData} margin={{ top: 8, right: 8, left: 8, bottom: 40 }}>
-            <CartesianGrid strokeDasharray="3 3" />
+      <Box sx={{ width: '100%', height: 260 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={rows}>
+            <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
             <XAxis
               dataKey="from"
-              tickFormatter={formatCompactUsd}
-              label={{ value: 'Salary (USD)', position: 'insideBottom', offset: -5 }}
+              tick={{ fontSize: 11, fill: theme.palette.text.secondary }}
+              tickFormatter={(v) => formatCompactUsd(v)}
             />
-            <YAxis allowDecimals={false} label={{ value: 'Employees', angle: -90, position: 'insideLeft' }} />
+            <YAxis tick={{ fontSize: 11, fill: theme.palette.text.secondary }} />
             <Tooltip
-              labelFormatter={(_, payload) => payload?.[0]?.payload?.label || ''}
-              formatter={(value) => [ value, 'Count' ]}
+              formatter={(value) => [value, 'Count']}
+              labelFormatter={(v) => `From ${formatCompactUsd(v)}`}
+              contentStyle={{
+                borderRadius: 12,
+                border: `1px solid ${theme.palette.divider}`,
+                background: theme.palette.background.paper,
+              }}
             />
-            <Bar dataKey="count" name="Count" fill="#0b3d60" />
+            <Bar dataKey="count" name="Count" fill={theme.palette.acme.indigo} radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Box>
-    </SectionCard>
+    </ChartCard>
   )
 }

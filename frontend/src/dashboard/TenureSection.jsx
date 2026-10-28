@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 import {
   Bar,
   BarChart,
@@ -8,43 +8,63 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { formatCompactUsd, formatUsd } from './formatters'
-import SectionCard from './SectionCard'
+import ChartCard from '../components/ChartCard'
+import { formatUsd } from './formatters'
 import { useStatsResource } from './useStats'
+import { safeNumber } from '../utils/display'
 
 export default function TenureSection({ refreshKey }) {
+  const theme = useTheme()
   const { data, loading, error, refresh } = useStatsResource('/stats/tenure', [refreshKey])
 
-  const chartData = (data?.data || []).map((row) => ({
-    band: row.band,
-    median: row.median == null ? 0 : Number(row.median),
-    headcount: Number(row.headcount || 0),
+  const rows = (data?.data || []).map((row) => ({
+    ...row,
+    median: safeNumber(row.median, 0),
+    headcount: safeNumber(row.headcount, 0),
   }))
 
   return (
-    <SectionCard
-      title="Median pay by tenure"
-      subtitle="Bands of years since hired_on"
+    <ChartCard
+      title="Does tenure change the median?"
+      subtitle="Median pay by years at ACME."
+      footnote="Bands: 0–2, 2–5, and 5+ years."
       loading={loading}
       error={error}
       onRetry={refresh}
+      empty={rows.length === 0 ? 'No tenure data.' : null}
     >
-      <Box sx={{ width: '100%', height: 280 }} role="img" aria-label="Median pay by tenure chart">
-        <ResponsiveContainer>
-          <BarChart data={chartData} margin={{ top: 8, right: 8, left: 8, bottom: 8 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="band" label={{ value: 'Tenure (years)', position: 'insideBottom', offset: -2 }} />
-            <YAxis tickFormatter={formatCompactUsd} width={64} />
-            <Tooltip
-              formatter={(value, _name, item) => [
-                `${formatUsd(value)} (n=${item?.payload?.headcount ?? 0})`,
-                'Median',
-              ]}
+      <Box sx={{ width: '100%', height: 260 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={rows}>
+            <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+            <XAxis
+              dataKey="band"
+              tick={{ fill: theme.palette.text.secondary, fontSize: 11 }}
+              label={{ value: 'Tenure (years)', position: 'insideBottom', offset: -2 }}
             />
-            <Bar dataKey="median" name="Median" fill="#c45c26" />
+            <YAxis
+              tick={{ fill: theme.palette.text.secondary, fontSize: 11 }}
+              tickFormatter={(v) => formatUsd(v)}
+            />
+            <Tooltip
+              formatter={(value, name, props) => {
+                if (name === 'median') return [formatUsd(value), 'Median']
+                return [value, name]
+              }}
+              labelFormatter={(label, payload) => {
+                const hc = payload?.[0]?.payload?.headcount
+                return hc != null ? `${label} · ${hc} people` : label
+              }}
+              contentStyle={{
+                borderRadius: 12,
+                border: `1px solid ${theme.palette.divider}`,
+                background: theme.palette.background.paper,
+              }}
+            />
+            <Bar dataKey="median" name="Median" fill={theme.palette.acme.pink} radius={[8, 8, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Box>
-    </SectionCard>
+    </ChartCard>
   )
 }
